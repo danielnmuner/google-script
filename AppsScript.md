@@ -5,11 +5,13 @@ Powered by: Aula en la nube
 - [Crear y abrir documentos en Google DOCS](#crear-y-abrir-documentos-en-google-docs)
 - [Condiciones](#condiciones)
 - [Bucle](#bucle)
+- [Bucle FOR IN y análisis de atributos](#bucle-for-in-y-análisis-de-atributos)
 
 ## Installar Google Apps Script
 1. Google Apps Script and open it then start scripting. Also get access from Goolge Drive
 
-## Crear y abrir documentos en Google DOCS 
+## Crear y abrir documentos en Google DOCS   
+
 *[Indice](#indice)*
 1. Creacion de un Documento en Blanco en Google Docs
 ```js
@@ -36,7 +38,8 @@ function OpenDocumento() {
   documento.getBody().appendParagraph('Text')
 }
 ```
-## Condiciones 
+## Condiciones   
+
 *[Indice](#indice)*
 
 ```js
@@ -74,7 +77,8 @@ else
 
 }
 ```
-## Bucle
+## Bucle   
+
 *[Indice](#indice)*
 A continuaciones aplicaremos loops en documentos, pero para eso debemos abrir el Documento sobre el que se escribira en la ejecucion del bucle.
 1. Inicializamos `contador`, definimos una condicion a partir de contador e incrementamos `contador++`.
@@ -119,4 +123,33 @@ function ChangeDocThruLoop(){
 }
 ```
 
+## Bucle FOR IN y análisis de atributos   
+*[Indice](#indice)*
 
+Este codigo ademas de usar `For In` similar a `For Each` utilizar metodos que hacen que un vector se convierta en otro vector y ademas se modifique a partir de sus atributos. 
+```js
+function AnalizarParrafos(){
+  var doc = DocumentApp.openById('1S9s6tjqJapx7BL2fnxzsWRwjNmS3UoGgrCINLqYjRMQ');
+
+//Acedemos al texto a partir de getParagraphs()
+  var parrafos = doc.getBody().getParagraphs();
+//Inicializamos el tamaño del texto
+  var size = 10;
+
+//Analizar cada parrafo por separado.
+  for(var parrafo in parrafos){
+//Crear un vector con los attributos del parrafo
+    var paragraphattrs = parrafos[parrafo].getAttributes();
+//Recorrer el vector y validar los condicionales
+    for(var paragraphattr in paragraphattrs){
+//Si este en BOLD entonces retiramos ese atributo
+      if (paragraphattr == 'BOLD' && paragraphattrs[paragraphattr] == true){
+        parrafos[parrafo].setAttributes({'BOLD':false});
+      }
+      if (paragraphattr == 'FOREGROUD_COLOR' && paragraphattrs[paragraphattr] != null){
+        parrafos[parrafo].setAttributes({'FOREGROUD_COLOR':'#00ffff','FOND_SIZE':size++});
+      }
+    }
+  }
+}
+```

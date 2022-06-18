@@ -6,6 +6,7 @@ Powered by: Aula en la nube
 - [Condiciones](#condiciones)
 - [Bucle](#bucle)
 - [Bucle FOR IN y análisis de atributos](#bucle-for-in-y-análisis-de-atributos)
+- [Crear funciones con parámetros y menú personalizado](#crear-funciones-con-parámetros-y-menú-personalizado)
 
 ## Installar Google Apps Script
 1. Google Apps Script and open it then start scripting. Also get access from Goolge Drive
@@ -153,3 +154,7 @@ function AnalizarParrafos(){
   }
 }
 ```
+
+## Crear funciones con parámetros y menú personalizado   
+*[Indice](#indice)*   
+

@@ -213,3 +213,87 @@ function PromptWindow(){
 ```
 ## Crear formulario HTML en Google Docs
 *[Indice](#indice)* 
+
+1. Creamos un formulario usando HTML y luego usamos JavaScript para llamar la funcion de Apps Script y pasarle lo argumentos obtenidos a partir del formulario.
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <label>Cuantos Parrafos?</label>
+    <input type="number" id="cantidad"><br>
+
+    <label>Introduce el contenido de Parrafos</label>
+    <input type="text" id="frase"><br>
+
+    <label>Introduce el Color</label>
+    <input type="color" id="colores"><br>
+
+    <label>Fecha</label>
+    <input type="date" id="fecha"><br>
+
+    <button type="button" onclick="GetInfoForm()">Escribir Documento</button>
+
+  <script>
+    function GetInfoForm(){
+      var texto = document.getElementById('frase').value;
+      var number = document.getElementById('cantidad').value;
+      var colores = document.getElementById('colores').value;
+      var fecha = document.getElementById('fecha').value;
+
+      google.script.run.OpenFromJS(texto,number,colores,fecha)
+      google.script.host.close(); 
+    }
+  </script>
+  </body>
+</html>
+```   
+![image](https://user-images.githubusercontent.com/60556632/174464563-c9faac74-fc00-44fb-874f-9b2fb5bf32ff.png)
+
+2. Creamos un menu facil de acceder desde Google Docs
+```js
+function onOpen(){
+//createMenu('name_nav_menu') Es el nombre que tendra la nueva opcion del panel
+  DocumentApp.getUi().createMenu('Options')
+//addItem('name_option','name_function') No solo el nombre de la opcion sino que funcion desencadena.
+  .addItem('Form HTML','OpenForm')
+  .addToUi();
+}
+```
+3. La primera funcion a Ejecutar es aquella que abre el archivo HTML
+
+```js
+//La funcion `OpenForm()` abre al formulario y es la funcion desencadenada por el menu de herramientas
+function OpenForm(){
+//Me permite crear un HTML a partir de un archivo
+  var html = HtmlService.createHtmlOutputFromFile('index.html')
+  .setWidth(1000)
+  .setHeight(700)
+
+//Usado para proteger a los usuarios de HTML malicioso o JS 
+//y que se ejecuta en un Sandbox que impone restricciones al codigo.
+  .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+  DocumentApp.getUi().showModalDialog(html,'Name');
+}
+```
+4. Luego de abrir el formulario, el usuario ingresara la informacion y esta sera recolectada a travez de JavaScript para pasar los argumentos a la siguiente funcion. 
+
+```js
+function OpenFromJS(texto,numero,color,fecha){
+  var documento = DocumentApp.getActiveDocument();
+  documento.getBody().clear();
+  documento.getBody().setAttributes({'FOREGROUND_COLOR':color});
+  var title = documento.getBody().insertParagraph(0,'Darn Good Title')
+  title.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+  for(var contador = 0;contador<numero;contador++){
+    var paraph = documento.getBody().appendParagraph(texto);
+  }
+
+  documento.addFooter();
+  var footer = documento.getFooter().appendParagraph('Modified on: '+fecha);
+  footer.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+}
+```

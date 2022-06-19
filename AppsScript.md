@@ -158,10 +158,6 @@ function AnalizarParrafos(){
 ## Crear funciones con parámetros y menú personalizado   
 *[Indice](#indice)*   
 
-![image](https://user-images.githubusercontent.com/60556632/174460372-a7fd2c75-876e-4346-84b2-66ba13526444.png)
-
-![image](https://user-images.githubusercontent.com/60556632/174460385-8c74495d-2bb2-4dab-9761-d48286afc94f.png)
-
 La funcion `onOpen` recibe este nombre por comvension para la creacion de un menu en el panel de herramientas de google Docs
 ```js
 function onOpen(){
@@ -173,6 +169,7 @@ function onOpen(){
   .addToUi();
 }
 ```
+![image](https://user-images.githubusercontent.com/60556632/174460372-a7fd2c75-876e-4346-84b2-66ba13526444.png)   
 
 La funcion `CreateParagraph()` simplemente accede al documento activo, reemplaza todo lo que pueda haber en `getBody()` por un texto y luego del texto un bucle `For` escribe varias veces sobre el documento 
 ```js
@@ -185,6 +182,8 @@ function CreateParagraph(){
     documento.getBody().appendParagraph('Texto Creado a partir de un Loop en Apps Script \n')
   }
 }
+```
+![image](https://user-images.githubusercontent.com/60556632/174460385-8c74495d-2bb2-4dab-9761-d48286afc94f.png)    
 
 La funcion `PromptWindow()` hace exactamente lo mismo sin embargo le pregunta el texto al usuario y le da opciones para aceptar o cancelar la ejecucion de la funcion. 
 

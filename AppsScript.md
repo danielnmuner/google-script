@@ -302,3 +302,155 @@ function OpenFromJS(texto,numero,color,fecha){
 
 ## Crear tablas personalizadas con formulario HTML   
 *[Indice](#indice)* 
+
+En esta seccion se explica como crear una tabla en Google Docs. El usuario indica filas, columnas y que colores debe tener el encabezado y el cuerpo de la tabla. El proceso de ejecucion involucra una interfaz de usuario creada a partir de **HTML**, **CSS** y **JavaScript** la cual se comunica con **Apps Script** y ejecuta la logica de la creacion de la tabla en este lenguage.
+
+1. Creamos un menu `Options` en Google Docs con la opcion `Insert Table`.   
+
+![image](https://user-images.githubusercontent.com/60556632/174496903-8fb27843-cf90-43ba-afa6-5eefdf974e27.png)
+
+```js
+function onOpen(){
+  DocumentApp.getUi().createMenu('Options')
+  .addItem('Form HTML','OpenForm')
+  .addItem('Insert Table','OpenCreateTable')
+  .addToUi();
+}
+```
+2. La opcion `Insert Table` activa la funcion `OpenCreateTable()` que se encarga de abrir el archivo **HTML**.
+
+```js
+function OpenCreateTable(){
+  var html = HtmlService.createHtmlOutputFromFile('table.html')
+  .setWidth(1000)
+  .setHeight(700)
+  .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+  DocumentApp.getUi().showModalDialog(html,'Este Codigo nos Permite insertar tablas en el Documento');   
+}
+```
+  - Usamos Bootstrap y le damos estilo al HTML. 
+
+```html
+<!DOCTYPE html>
+<html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<style>
+.contenedor{
+  display:flex;
+  text-align:right;
+  justify-content:space-around;
+  flex-direction:row;
+  flex-wrap: wrap;
+  fond-size:large;
+  border-radius: 5px;
+  padding:50px;
+  margin:40px;
+  width: 80%;
+  background-color:rgb(243,247,255);
+  box-shadow:0px 2px 2px #aaaaaa;
+}
+.caja{
+  line-height:50px;
+}
+</style>
+```
+- Creamos el formulario en **HTML** 
+
+```html
+<head>
+  <base target="_top">
+</head>
+<body>
+  <div class="contenedor">
+    <div class="caja">
+      <label>Introduce la cantidad de Filas</label>
+      <input type="range" id="filas" min="1" max="20" step="1" value="5">
+      <output class="filas-output"></output><br>
+
+      <label>Introduce la cantidad de Columnas</label>
+      <input type="range" id="columnas" min="1" max="20" step="1" value="5">
+      <output class="columnas-output"></output><br>
+
+      <label>Introduce el Color Enabezado</label>
+      <input type="color" id="colorE"><br>
+
+      <label>Introduce el Color Par</label>
+      <input type="color" id="colorP"><br>
+
+      <label>Introduce el Color Impar</label>
+      <input type="color" id="colorI"><br>
+
+      <center><button type="button" class="btn btn-outline-primary" onclick="CrearTable()">Crear Tabla</button></center>
+
+    </div>
+  </div>
+```
+  - Capturamos los datos del Usuario usando **JS**
+```html
+<script>
+    function CrearTable(){
+      var rows = document.getElementById('filas').value;
+      var columns = document.getElementById('columnas').value;
+      var colorE = document.getElementById('colorE').value;
+      var colorP = document.getElementById('colorP').value;
+      var colorI = document.getElementById('colorI').value;
+      google.script.run.ParamsTable(rows,columns,colorE,colorP,colorI);
+      google.script.host.close(); 
+    }
+```
+- Esta parte del codigo solo se encarga de mostrar el usuario el valor correspondiente a los `<input>` tipo `rage`.
+
+```html
+   //Indica el Id del objeto que se esta consultando
+    const numRows = document.querySelector('#filas');
+    //Indica la clase del Objeto donde se va a mostrar el # de rows
+    const outRows = document.querySelector('.filas-output');
+    //Se coloca para mostrar el valor inicial addEventListener() no lo muestra a menos que cambie.
+    outRows.textContent =  numRows.value;
+    //Obtiene y Actualiza constatemente outRows que es igual a numRows.value
+    numRows.addEventListener('input',function(){outRows.textContent =  numRows.value;})
+
+    const numCols = document.querySelector('#columnas');
+    const outCols = document.querySelector('.columnas-output');
+    outCols.textContent =  numCols.value;
+    numCols.addEventListener('input',function(){outCols.textContent =  numCols.value;})
+
+
+  </script>
+  </body>
+</html>
+```
+3. Creamos una funcion en Apps Script que se encarga de crear la tabla segun los parametros indicados por el usuario.
+
+```js
+function ParamsTable(rows,columns,colorE,colorP,colorI){
+
+  var documento =  DocumentApp.getActiveDocument().getBody();
+
+  var styleDocP = {};
+  styleDocP[DocumentApp.Attribute.BACKGROUND_COLOR] = colorP;
+
+  var styleDocE = {};
+  styleDocE[DocumentApp.Attribute.BACKGROUND_COLOR] = colorE;
+  styleDocE[DocumentApp.Attribute.BOLD] = true
+
+  var styleDocI = {};
+  styleDocI[DocumentApp.Attribute.BACKGROUND_COLOR] = colorI;
+
+  var createTable =  documento.appendTable();
+  var fila;
+  var celda;
+  for(var i=0;i<rows;i++){
+    fila = createTable.appendTableRow();
+    for(var j=0;j<columns;j++){
+      celda = fila.appendTableCell('Celda '+j)
+      if (i==0) celda.setAttributes(styleDocE);
+      else if (i%2 == 0) celda.setAttributes(styleDocP);
+      else celda.setAttributes(styleDocI);
+    }
+  }
+}
+```
+

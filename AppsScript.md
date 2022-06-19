@@ -158,3 +158,56 @@ function AnalizarParrafos(){
 ## Crear funciones con parámetros y menú personalizado   
 *[Indice](#indice)*   
 
+![image](https://user-images.githubusercontent.com/60556632/174460372-a7fd2c75-876e-4346-84b2-66ba13526444.png)
+
+![image](https://user-images.githubusercontent.com/60556632/174460385-8c74495d-2bb2-4dab-9761-d48286afc94f.png)
+
+La funcion `onOpen` recibe este nombre por comvension para la creacion de un menu en el panel de herramientas de google Docs
+```js
+function onOpen(){
+//createMenu('name_nav_menu') Es el nombre que tendra la nueva opcion del panel
+  DocumentApp.getUi().createMenu('Options')
+//addItem('name_option','name_function') No solo el nombre de la opcion sino que funcion desencadena.
+  .addItem('Direct','CreateParagraph')
+  .addItem('Promt','PromptWindow')
+  .addToUi();
+}
+```
+
+La funcion `CreateParagraph()` simplemente accede al documento activo, reemplaza todo lo que pueda haber en `getBody()` por un texto y luego del texto un bucle `For` escribe varias veces sobre el documento 
+```js
+function CreateParagraph(){
+//Debido a que el codigo se encuentra enlazado al Documento solo es suficiente
+//el metodo getActiveDocument()
+  var documento =  DocumentApp.getActiveDocument();
+  documento.getBody().setText('Aqui Inicial el Bucle: ')
+  for(var contador = 0; contador < 5;contador++){
+    documento.getBody().appendParagraph('Texto Creado a partir de un Loop en Apps Script \n')
+  }
+}
+
+La funcion `PromptWindow()` hace exactamente lo mismo sin embargo le pregunta el texto al usuario y le da opciones para aceptar o cancelar la ejecucion de la funcion. 
+
+1. Acedemos al metodo de `interfaz de usuario` del docuemento en general y luego le indicamos que queremos crear una ventana emergente `prompt`.
+2. Almacenamos la respuesta del usuario en `button -> Button.CANCEL|Button.OK`. Y en texto respectivamente.
+3. Usamos la infomacion de `button` para establecer la condicion y usamos `text` para indicar que se debe escribir en el documento.
+```js
+function PromptWindow(){
+  var ui =  DocumentApp.getUi();
+  var ventana = ui.prompt('Nombre de Ventana Emergente','Informacion hacerca de la Ventana',ui.ButtonSet.OK_CANCEL);
+  var button = ventana.getSelectedButton();
+  var text = ventana.getResponseText();
+
+  if(button == ui.Button.OK){
+    var documento =  DocumentApp.getActiveDocument();
+    documento.getBody().setText('Aqui Inicial el Bucle: ')
+    for(var contador = 0; contador < 5;contador++){
+      documento.getBody().appendParagraph(text)
+    }
+  }
+
+  else if (button == ui.Button.CANCEL){
+    ui.alert('Cancelaste la Operacion, intenta nuevamente')
+  }
+}
+```

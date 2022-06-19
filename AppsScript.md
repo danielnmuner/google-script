@@ -9,6 +9,7 @@ Powered by: Aula en la nube
 - [Crear funciones con parámetros y menú personalizado](#crear-funciones-con-parámetros-y-menú-personalizado)
 - [Crear formulario HTML en Google Docs](#crear-formulario-html-en-google-docs)   
 - [Crear tablas personalizadas con formulario HTML](#crear-tablas-personalizadas-con-formulario-html)
+- [Combinar correspondencia en Google Docs](#combinar-correspondencia-en-google-docs)
 
 
 ## Installar Google Apps Script
@@ -456,4 +457,7 @@ function ParamsTable(rows,columns,colorE,colorP,colorI){
 }
 ```
 ![image](https://user-images.githubusercontent.com/60556632/174497243-41a114b6-0c1f-4431-9765-3ea5678f3ae3.png)
+
+## Combinar correspondencia en Google Docs
+*[Indice](#indice)*
 

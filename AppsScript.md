@@ -358,6 +358,8 @@ function OpenCreateTable(){
 ```
 - Creamos el formulario en **HTML** 
 
+![image](https://user-images.githubusercontent.com/60556632/174497210-6ec01137-a359-4bd0-8584-5dc4d9d8de79.png)
+
 ```html
 <head>
   <base target="_top">
@@ -388,7 +390,7 @@ function OpenCreateTable(){
   </div>
 ```
   - Capturamos los datos del Usuario usando **JS**
-```html
+```js
 <script>
     function CrearTable(){
       var rows = document.getElementById('filas').value;
@@ -402,7 +404,7 @@ function OpenCreateTable(){
 ```
 - Esta parte del codigo solo se encarga de mostrar el usuario el valor correspondiente a los `<input>` tipo `rage`.
 
-```html
+```js
    //Indica el Id del objeto que se esta consultando
     const numRows = document.querySelector('#filas');
     //Indica la clase del Objeto donde se va a mostrar el # de rows
@@ -453,4 +455,5 @@ function ParamsTable(rows,columns,colorE,colorP,colorI){
   }
 }
 ```
+![image](https://user-images.githubusercontent.com/60556632/174497243-41a114b6-0c1f-4431-9765-3ea5678f3ae3.png)
 

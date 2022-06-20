@@ -461,3 +461,56 @@ function ParamsTable(rows,columns,colorE,colorP,colorI){
 ## Combinar correspondencia en Google Docs
 *[Indice](#indice)*
 
+A continuacion se muestra como podemos crear documentos personalizables a partir de los parametros indicados por el usuario los cuales fueron previamente asignados a una variable la cual se reemplazara en el documento.
+
+1. Creamos una platilla y colocamos las variables `<<variable>>`.   
+
+![image](https://user-images.githubusercontent.com/60556632/174512603-3dc17c6d-f89d-43b2-b0d1-d9a3507c07de.png)
+
+2. Creamos el menu de `Google Docs` para que el usuario intereacture con la funcion.    
+![image](https://user-images.githubusercontent.com/60556632/174512658-cd38de2f-9027-4837-959a-2e87a1c24b2d.png)
+
+3. Abrimos el HTML usando `HtmlService.createHtmlOutputFromFile` como se ha hecho anteriormente.   
+![image](https://user-images.githubusercontent.com/60556632/174512767-95d07ee8-8f9e-4614-9211-a4390ee5c428.png)
+
+4. La funcion principal `CreateCertificate()` crea un nuevo **Documento** y luego reemplaza las variables `<<>>` en el texto, asi podemos utilizar la plantilla un numero ilimitado de veces y crear tantos documentos como queramos. 
+```js
+function CreateCertificate(curso,plataforma,funcion){
+
+  var idCurrentDoc =  DocumentApp.getActiveDocument().getId();
+  var currentDoc = DriveApp.getFileById(idCurrentDoc)
+
+//Creamos un nuevo documento, si no lo hacemos perderemos la plantilla
+  var newDoc= currentDoc.makeCopy('Curso: '+curso)
+  var documento = DocumentApp.openById(newDoc.getId());
+
+//Obtenemos la fecha en la que se creo el Certificado
+  var date = new Date();
+  var mes = date.getMonth();
+  var day = date.getDate();
+  var year = date.getFullYear();
+
+//La funcion switch pemite reemplazar el mes numerico a tipo texto
+  switch(mes){
+    case 0: mes = 'Enero'; break;
+    case 1: mes = 'Febrero'; break;
+    case 2: mes = 'Marzo'; break;
+    case 3: mes = 'Abril'; break;
+    case 4: mes = 'Mayo'; break;
+    case 5: mes = 'Junio'; break;
+    case 6: mes = 'Julio'; break;
+    case 7: mes = 'Agosto'; break;
+    case 8: mes = 'Septiembre'; break;
+    case 9: mes = 'Octubre'; break;
+    case 10: mes = 'Noviembre'; break;
+    case 11: mes = 'Diciembre'; break;
+  }
+
+//Reemplazamos las variables <<>> en el texto por aquellas ingresadas por el usuario.
+  var certyDate = 'Certificado Emitido el dia '+day+' de '+mes+' de '+year;
+  documento.getBody().replaceText('<<curso>>',curso);
+  documento.getBody().replaceText('<<plataforma>>',plataforma);
+  documento.getBody().replaceText('<<funcion>>',funcion);
+  documento.getBody().replaceText('<<fecha>>',certyDate);
+}
+```

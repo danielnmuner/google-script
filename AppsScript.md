@@ -14,6 +14,7 @@ Powered by: Aula en la nube
 - [Añadir ventana de verificación sobre combinar correspondencia](#añadir-ventana-de-verificación-sobre-combinar-correspondencia)
 - [Añadiendo casillas de verificación](#añadiendo-casillas-de-verificación)
 - [Generar PDF a partir de un documento de Google](#generar-pdf-a-partir-de-un-documento-de-google)
+- [Crear carpetas y mover archivos](#crear-carpetas-y-mover-archivos)
 
 
 ## Installar Google Apps Script
@@ -723,12 +724,19 @@ Entre mas valiaciones e informacion tenga usuario este tendra mas informacion de
     ui.alert('Acabas de cancelar la generacion de de Documentos');
   }
 }
-
 ```
-
 
 ## Generar PDF a partir de un documento de Google
 *[Indice](#indice)*
 
+Crear PDF y guardarlo en la carpeta raiz de Google Drive. Lo primero es ejecutar `saveAndClose()` para que el PDF no se cree mientras se guarda el el DOC sino que lo haga cuando ya haya sido creado. Indicamos el tipo de documento con `getAs()` y con `setName()` ademas de dale nombre añadimos el tipo de archivo `.pdf`. Finalmente creamos el PDF en la carpeta raiz de Drive.
+```js
+documento.saveAndClose();
+var docPdf = documento.getAs('application/pdf');
+docPdf.setName(documento.getName()+'.pdf');
+DriveApp.createFile(docPdf);
+```
 
+## Crear carpetas y mover archivos    
+*[Indice](#indice)*
 

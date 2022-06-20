@@ -23,6 +23,7 @@ Powered by: Aula en la nube
 - [Bucle FOR IN Doble sobre un rango de celdas](#bucle-for-in-doble-sobre-un-rango-de-celdas)
 - [Bucle FOREACH Doble sobre un rango de celdas](#bucle-foreach-doble-sobre-un-rango-de-celdas)
 - [Función MAP para manipular matrices y arrays](#función-map-para-manipular-matrices-y-arrays)
+- [Función REDUCE para analizar matrices y arrays](#función-reduce-para-analizar-matrices-y-arrays)
 
 
 ## Installar Google Apps Script
@@ -987,3 +988,7 @@ function MapTotalArray(datos){
   }
 }
 ```
+## Función REDUCE para analizar matrices y arrays   
+*[Indice](#indice)*  
+
+

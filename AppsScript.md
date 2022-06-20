@@ -878,3 +878,84 @@ function DoubleArrayForIn(datos) {
 ```
 ## Bucle FOREACH Doble sobre un rango de celdas    
 *[Indice](#indice)*  
+
+El uso es `ForEach` es mas simplificado de todos los `For` hasta el momento. A continuacion se muetran desde la forma mas larga hasta la mas corta con `arrow functions`.
+
+1. ForEach se compone de un elemento iterable y de una funcion como argumento que contiene el codigo correspondiente. 
+
+```js
+function DoubleForEach(datos){
+//Vector que almacena la informacion resultante.
+  var result = [];
+  if(Array.isArray(datos)){
+    //Primer forEach se encarga de recorrer las filas
+    datos.forEach(function(row){
+      //Segundo forEach se encarga de recorrer las columnas
+      //dataRow corresponde al vector de cada fila
+      var dataRow = []
+      row.forEach(function(column){
+      //Caculamos el doble de cada celda en la medida que recorremos el array de cada fila
+        dataRow.push(column*2)
+      });
+      //Guardamos cada vector dataRow en result hasta construir la matriz
+      result.push(dataRow)
+    });
+    return result;
+  }
+  else{
+    return datos*2;
+  }
+}
+```
+
+2. Utilizamos arrow functions para hacer el codigo mas legible. 
+```js
+function DoubleForEach(datos){
+  var result = [];
+  if(Array.isArray(datos)){
+    datos.forEach(row =>{
+      var dataRow = []
+      row.forEach(column=> dataRow.push(column*2));
+      result.push(dataRow)
+    });
+    return result;
+  }
+  else{
+    return datos*2;
+  }
+}
+```
+
+3. Utilizamos un indice para cada vector en vez de crear un array por cada fila.
+```js
+function DoubleForEach(datos){
+  var result = [];
+  if(Array.isArray(datos)){
+
+    datos.forEach((row,idxrow) =>{
+      //Creamos un array para cada una de las filas.
+      result[idxrow] = new Array(datos[idxrow].length);
+      
+      //Calculamos el doble de cada elemento del array de cada fila.
+      row.forEach((cell,idxcol)=> result[idxrow][idxcol] = cell*2);
+    });
+    return result;
+  }
+  else{
+    return datos*2;
+  }
+}
+```
+4. La siguiente funcion calcula la sumatoria total de un arreglo. 
+```js
+function DoubleTotal(datos){
+  var result = 0;
+  if(Array.isArray(datos)){
+    datos.forEach(row => row.forEach(col => result += col*2));
+    return result;
+  }
+  else{
+    return datos*2;
+  }
+}
+```

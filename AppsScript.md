@@ -766,7 +766,35 @@ var carpeta =carpetaPadre.createFolder('Certificados: '+ new Date());
 ```
 
 ## Mejorando función combinar correspondencia    
-*[Indice](#indice)*
+*[Indice](#indice)*    
+
+El objetivo es indicarle al usuario si enverdad se han generado documentos. En el codigo anterior se mostraba el mensaje de alerta `Se han creado los documentos` incluado cuando no era el caso. Ahora colocaremos condicionales adicionales para entragar la informacion correcta.
+
+1. Ahora crearemos la carpeta dentro del `while` para evitar que se creen carpetas vacias, como recordaras antes se creaba una carpeta antes de ejecutar el codigo. 
+2. Para evitar que se crea una carpeta por cada documento usamos un condicional para que el bucle solo pueda acceder a la creacion de carpeta si y solo si encontro algun documento y ademas lo haga una sola vez por todos los documentos.
+```js
+//El condicional valida si la columna D o de ENVIADO se cuentra marcada con true sino crea el documento
+if (currentSheet.getRange('D'+row).getValue() != true)
+{
+//documentosGenerados es una variable que se incrementa solo si encuentra una documento por crear.
+  documentosGenerados++;
+//documentosGenerados va a incrementar varias veces pero solo se creara la carpeta cuanto sea igual a 1
+  if (documentosGenerados == 1){
+    //Creamos una carpeta en Drive
+    var idHoja = SpreadsheetApp.getActive().getId();
+    var carpetaPadre = DriveApp.getFileById(idHoja).getParents().next();
+    var carpeta =carpetaPadre.createFolder('Certificados: '+ new Date());
+  } 
+//Codigo ....
+}
+```
+3. Ahora que solo se creara la carpeta si hay documentos por crear solo falta agregar los ventanas de alerta para notificar al usuario.
+```js
+if (documentosGenerados>0)
+  ui.alert('Se han generado ' + documentosGenerados + 'documentos');
+else 
+  ui.alert('No se han encontrado datos por lo cual no se generaron documentos')
+```
 
 
 

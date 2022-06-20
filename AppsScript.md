@@ -11,6 +11,7 @@ Powered by: Aula en la nube
 - [Crear tablas personalizadas con formulario HTML](#crear-tablas-personalizadas-con-formulario-html)
 - [Combinar correspondencia en Google Docs](#combinar-correspondencia-en-google-docs)
 - [Combinar correspondencia múltiple](#combinar-correspondencia-múltiple)
+- [Añadir ventana de verificación sobre combinar correspondencia](#añadir-ventana-de-verificación-sobre-combinar-correspondencia)
 
 
 ## Installar Google Apps Script
@@ -596,3 +597,6 @@ function InsertData() {
   }
 }
 ```
+## Añadir ventana de verificación sobre combinar correspondencia    
+*[Indice](#indice)* 
+

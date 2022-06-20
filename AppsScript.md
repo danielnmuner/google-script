@@ -25,6 +25,7 @@ Powered by: Aula en la nube
 - [Función MAP para manipular matrices y arrays](#función-map-para-manipular-matrices-y-arrays)
 - [Función REDUCE para analizar matrices y arrays](#función-reduce-para-analizar-matrices-y-arrays)
 - [Función FILTER sobre rango de celdas](#función-filter-sobre-rango-de-celdas)
+- [Funciones con varios parámetros](#funciones-con-varios-parámetros)
 
 
 ## Installar Google Apps Script
@@ -1004,4 +1005,18 @@ function MapTotalArray(datos){
 ## Función FILTER sobre rango de celdas   
 *[Indice](#indice)*  
 
+Esta funcion permite aplicar un filtro sobre los datos, es decir reducir el tamaño del arreglo. Si queremos realizar una reduccion de los datos, podemos primero filtart los datos y luego pasarlos a una funcion que haga la reduccion. 
+```js
+function FilterArray(datos){
+  if (Array.isArray(datos)){
+  //Se convierte cada fila en un array luego aplicamos filter. 
+    return datos.map(row => row.filter(cell => cell > 5));
+  }
+  else{
+    return datos.filter(cell => cell > 5);
+  }
+}
+```
 
+## Funciones con varios parámetros    
+*[Indice](#indice)* 

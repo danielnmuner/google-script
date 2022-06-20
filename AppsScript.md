@@ -600,3 +600,24 @@ function InsertData() {
 ## Añadir ventana de verificación sobre combinar correspondencia    
 *[Indice](#indice)* 
 
+La ventana de verificacion nos permite confirmar la accion del usuario en caso de que la accion no haya sido activada intensionalmente. El codigo es exactamente el mismo que la seccion anterior solo que esta encerrado en condicionales para ejecutarse o no segun la repuesta del usuario.
+
+```js
+function InsertData() {
+
+  var ui = SpreadsheetApp.getUi();
+  var answer =  ui.alert('Estas a punto de geenerar los documentos?',ui.ButtonSet.YES_NO)
+  if(answer == ui.Button.YES){
+//Aqui va todo el codigo fuente...
+//Confirma la ejecucion del mismo
+    ui.alert('Los documentos se han creado satisfactoriamente');
+  }
+  else
+  {
+//Confirma la cancelacion del mismo.
+    ui.alert('Acabas de cancelar la generacion de de Documentos');
+  }
+```
+
+## 
+*[Indice](#indice)* 

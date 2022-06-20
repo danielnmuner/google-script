@@ -13,6 +13,7 @@ Powered by: Aula en la nube
 - [Combinar correspondencia múltiple](#combinar-correspondencia-múltiple)
 - [Añadir ventana de verificación sobre combinar correspondencia](#añadir-ventana-de-verificación-sobre-combinar-correspondencia)
 - [Añadiendo casillas de verificación](#añadiendo-casillas-de-verificación)
+- [Generar PDF a partir de un documento de Google](#generar-pdf-a-partir-de-un-documento-de-google)
 
 
 ## Installar Google Apps Script
@@ -621,4 +622,113 @@ function InsertData() {
 ```
 
 ## Añadiendo casillas de verificación
-*[Indice](#indice)* 
+*[Indice](#indice)*
+
+Entre mas valiaciones e informacion tenga usuario este tendra mas informacion de que no se ha creado y en caso de haberlo creado, indicaremos cuando. El codigo de creacion de documentos a partir de una patilla es el mismo y solo se añade una estructura de control `IF` para validar si el docuemento fue creado  previamente.
+
+```js
+//Ejecuta el bucle si la celda no esta en blanco
+  while(!currentCel.isBlank()){
+
+//El condicional valida si la columna D o de ENVIADO se cuentra marcada con true sino crea el documento
+  if (currentSheet.getRange('D'+row).getValue() != true)
+  {
+
+  //Aqui va el codigo ....
+
+  //Creamos en Checkbox y justo despues de crearlo lo marcamos
+    currentSheet.getRange('D'+row).insertCheckboxes();
+    currentSheet.getRange('D'+row).setValue(true);
+
+    currentSheet.getRange('E'+row).setValue(date)
+
+  }
+```    
+![image](https://user-images.githubusercontent.com/60556632/174606175-85cd5817-3371-4564-8133-dbab08b74848.png)    
+ El codigo completo hasta el momento:
+ 
+ ```js 
+ function InsertData() {
+
+  var ui = SpreadsheetApp.getUi();
+  var answer =  ui.alert('Estas a punto de geenerar los documentos?',ui.ButtonSet.YES_NO)
+  if(answer == ui.Button.YES){
+
+    var currentDoc = DriveApp.getFileById('1U0WAP6dFPRYfZOW8jSPSJ8Vo2UthIdNaQV0zWs3oFGY')
+    var row = 2;
+    var nameCel = 'A'+row;
+    var currentSheet = SpreadsheetApp.getActive();
+    var currentCel =  currentSheet.getRange(nameCel);
+
+//Ejecuta el bucle si la celda no esta en blanco
+    while(!currentCel.isBlank()){
+    
+//El condicional valida si la columna D o de ENVIADO se cuentra marcada con true sino crea el documento
+    if (currentSheet.getRange('D'+row).getValue() != true)
+    {
+
+    //Aqui va el codigo ....
+    //Creamos un nuevo documento, si no lo hacemos perderemos la plantilla
+      var newDoc= currentDoc.makeCopy('Curso: '+currentSheet.getRange('A'+row).getValue())
+      var documento = DocumentApp.openById(newDoc.getId());
+
+    //Obtenemos la fecha en la que se creo el Certificado
+      var date = new Date();
+      var mes = date.getMonth();
+      var day = date.getDate();
+      var year = date.getFullYear();
+
+    //La funcion switch pemite reemplazar el mes numerico a tipo texto
+      switch(mes){
+        case 0: mes = 'Enero'; break;
+        case 1: mes = 'Febrero'; break;
+        case 2: mes = 'Marzo'; break;
+        case 3: mes = 'Abril'; break;
+        case 4: mes = 'Mayo'; break;
+        case 5: mes = 'Junio'; break;
+        case 6: mes = 'Julio'; break;
+        case 7: mes = 'Agosto'; break;
+        case 8: mes = 'Septiembre'; break;
+        case 9: mes = 'Octubre'; break;
+        case 10: mes = 'Noviembre'; break;
+        case 11: mes = 'Diciembre'; break;
+      }
+    //Reemplazamos las variables <<>> en el texto por aquellas ingresadas por el usuario.
+      var certyDate = 'Certificado Emitido el dia '+day+' de '+mes+' de '+year;
+      documento.getBody().replaceText('<<curso>>',currentSheet.getRange('A'+row).getValue());
+      documento.getBody().replaceText('<<plataforma>>',currentSheet.getRange('B'+row).getValue());
+      documento.getBody().replaceText('<<funcion>>',currentSheet.getRange('C'+row).getValue());
+      documento.getBody().replaceText('<<fecha>>',certyDate);
+
+    //Creamos en Checkbox y justo despues de crearlo lo marcamos
+      currentSheet.getRange('D'+row).insertCheckboxes();
+      currentSheet.getRange('D'+row).setValue(true);
+
+      currentSheet.getRange('E'+row).setValue(date)
+
+    }
+    
+
+
+      //Shifting Down Cells
+      row++;
+      nameCel = 'A'+row;
+      currentCel = currentSheet.getRange(nameCel);
+    }
+
+    ui.alert('Los documentos se han creado satisfactoriamente');
+  }
+  else
+  {
+    ui.alert('Acabas de cancelar la generacion de de Documentos');
+  }
+}
+
+```
+
+
+## Generar PDF a partir de un documento de Google
+*[Indice](#indice)*
+
+
+

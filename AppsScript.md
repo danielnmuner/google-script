@@ -518,4 +518,81 @@ function CreateCertificate(curso,plataforma,funcion){
 ![image](https://user-images.githubusercontent.com/60556632/174513478-a463c626-6017-428f-adc6-f71bb63d6828.png)
 
 ## Combinar correspondencia múltiple    
-*[Indice](#indice)*
+*[Indice](#indice)*   
+A diferencia del codigo anterior(HTML Form) ahora utilizamos **Google Sheets** para crear varios documentos.
+1. Como no usamos **HTML** no necesitamos funciones adicionales para abrir **HTML** que luego le pasa los datos a **JavaScript** y luego se los pasa a **Apps Script**. Nada de lo anterior, solo creamos del codigo **Apps Script** desde **Spread Sheet**, creamos una funcion que se conecta con el documento platilla que recibe los datos desde filas y columnas y que se ejecuta en un bucle hasta que no encuentra mas filas.
+
+2. Creamos la tabla que contiene la informacion que se colocara en el Documento ademas de un boton que al hacer click desencadenara la funcion.    
+![image](https://user-images.githubusercontent.com/60556632/174523324-c1970d0d-3fe8-47d0-887b-a0295009dd02.png)    
+
+3. `row` indica desde que fila iniciamos, `nameCel` es el nombre de la celda donde iniciamos, `currentSheet` se conecta con el Spread Sheet y finalmente `currentCel` se ubica en el rango señalado `nameCel` usando la funcion `getRange(nameCel)` 
+```js
+//Nos conectamos al documento donde se encuentra la plantilla utilizando su Id
+  var currentDoc = DriveApp.getFileById('1U0WAP6dFPRYfZOW8jSPSJ8Vo2UthIdNaQV0zWs3oFGY')
+  var row = 2;
+  var nameCel = 'A'+row;
+  var currentSheet = SpreadsheetApp.getActive();
+  var currentCel =  currentSheet.getRange(nameCel);
+```
+4. El bucle solo se ejecuta solo si la celda donde estamos ubicados no esta vacia. 
+```js
+ while(!currentCel.isBlank()){...}
+```
+5. Luego de confirmar que la celda no esta vacia, no s desplazamos por la columnas de la fila y asignamos el valor de cada celda en el documento platilla.
+```js
+documento.getBody().replaceText('<<curso>>',currentSheet.getRange('A'+row).getValue());
+documento.getBody().replaceText('<<plataforma>>',currentSheet.getRange('B'+row).getValue());
+documento.getBody().replaceText('<<funcion>>',currentSheet.getRange('C'+row).getValue());
+```
+6. El codigo completo es muy similar al de la seccion anterior. 
+
+```js
+function InsertData() {
+  var currentDoc = DriveApp.getFileById('1U0WAP6dFPRYfZOW8jSPSJ8Vo2UthIdNaQV0zWs3oFGY')
+  var row = 2;
+  var nameCel = 'A'+row;
+  var currentSheet = SpreadsheetApp.getActive();
+  var currentCel =  currentSheet.getRange(nameCel);
+
+//Ejecuta el bucle si la celda no esta en blanco
+  while(!currentCel.isBlank()){
+  //Creamos un nuevo documento, si no lo hacemos perderemos la plantilla
+    var newDoc= currentDoc.makeCopy('Curso: '+currentSheet.getRange('A'+row).getValue())
+    var documento = DocumentApp.openById(newDoc.getId());
+
+  //Obtenemos la fecha en la que se creo el Certificado
+    var date = new Date();
+    var mes = date.getMonth();
+    var day = date.getDate();
+    var year = date.getFullYear();
+
+  //La funcion switch pemite reemplazar el mes numerico a tipo texto
+    switch(mes){
+      case 0: mes = 'Enero'; break;
+      case 1: mes = 'Febrero'; break;
+      case 2: mes = 'Marzo'; break;
+      case 3: mes = 'Abril'; break;
+      case 4: mes = 'Mayo'; break;
+      case 5: mes = 'Junio'; break;
+      case 6: mes = 'Julio'; break;
+      case 7: mes = 'Agosto'; break;
+      case 8: mes = 'Septiembre'; break;
+      case 9: mes = 'Octubre'; break;
+      case 10: mes = 'Noviembre'; break;
+      case 11: mes = 'Diciembre'; break;
+    }
+  //Reemplazamos las variables <<>> en el texto por aquellas ingresadas por el usuario.
+    var certyDate = 'Certificado Emitido el dia '+day+' de '+mes+' de '+year;
+    documento.getBody().replaceText('<<curso>>',currentSheet.getRange('A'+row).getValue());
+    documento.getBody().replaceText('<<plataforma>>',currentSheet.getRange('B'+row).getValue());
+    documento.getBody().replaceText('<<funcion>>',currentSheet.getRange('C'+row).getValue());
+    documento.getBody().replaceText('<<fecha>>',certyDate);
+
+
+    //Shifting Down Cells
+    row++;
+    nameCel = 'A'+row;
+    currentCel = currentSheet.getRange(nameCel);
+  }
+}
+```

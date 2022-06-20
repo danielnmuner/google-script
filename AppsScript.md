@@ -22,6 +22,7 @@ Powered by: Aula en la nube
 - [Bucle FOR Doble sobre un rango de celdas en Google Sheets](#bucle-for-doble-sobre-un-rango-de-celdas-en-google-sheets)
 - [Bucle FOR IN Doble sobre un rango de celdas](#bucle-for-in-doble-sobre-un-rango-de-celdas)
 - [Bucle FOREACH Doble sobre un rango de celdas](#bucle-foreach-doble-sobre-un-rango-de-celdas)
+- [Función MAP para manipular matrices y arrays](#función-map-para-manipular-matrices-y-arrays)
 
 
 ## Installar Google Apps Script
@@ -956,6 +957,33 @@ function DoubleTotal(datos){
   }
   else{
     return datos*2;
+  }
+}
+```
+
+## Función MAP para manipular matrices y arrays    
+*[Indice](#indice)*  
+
+Funcion que obtiene otra matriz pero utilizando la funcion map.
+```js
+function MapArray(datos){
+  if (Array.isArray(datos)){
+    return datos.map(row => row.map(cell => cell*2));
+  }
+  else{
+    return datos *2;
+  }
+}
+```
+Funcion que obtiene la sumatoria del doble de cada celda, utilizando `map`.
+```js
+function MapTotalArray(datos){
+  var resul = 0;
+  if (Array.isArray(datos)){
+    return datos.map(row => row.map(cell => result +=cell*2));
+  }
+  else{
+    return datos *2;
   }
 }
 ```

@@ -24,6 +24,7 @@ Powered by: Aula en la nube
 - [Bucle FOREACH Doble sobre un rango de celdas](#bucle-foreach-doble-sobre-un-rango-de-celdas)
 - [Función MAP para manipular matrices y arrays](#función-map-para-manipular-matrices-y-arrays)
 - [Función REDUCE para analizar matrices y arrays](#función-reduce-para-analizar-matrices-y-arrays)
+- [Función FILTER sobre rango de celdas](#función-filter-sobre-rango-de-celdas)
 
 
 ## Installar Google Apps Script
@@ -989,6 +990,18 @@ function MapTotalArray(datos){
 }
 ```
 ## Función REDUCE para analizar matrices y arrays   
+*[Indice](#indice)*  
+
+Al aplicar la funcion reduce sobre una matriz el codigo quedaria de la siguiente forma:.
+```js
+function MapTotalArray(datos){
+  //Debido a que solo es posible cacular el doble a partir del segundo paramentro
+  //colocalos el cero el cual al momento de la ejecicion de convertira en el primero
+  return datos.reduce(((a,b)=> a+b.reduce(((c,d)=> c+d*2),0)),0);
+}
+```
+
+## Función FILTER sobre rango de celdas   
 *[Indice](#indice)*  
 
 

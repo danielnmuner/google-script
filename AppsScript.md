@@ -740,3 +740,26 @@ DriveApp.createFile(docPdf);
 ## Crear carpetas y mover archivos    
 *[Indice](#indice)*
 
+La carpeta raiz es `DriveApp` y por esto si creamos una carpeta esta se guarda alli a no ser que indiquemos mas instrucciones
+```js
+var carpeta =DriveApp.createFolder('Certificados: '+ new Date());
+```   
+Luego de haber creado la carpeta debemos mover los archivo de `DriveApp` a la Carpeta.
+```js
+//Donde var newDoc= currentDoc.makeCopy('Curso: '+currentSheet.getRange('A'+row).getValue())
+var documentoPdf = DriveApp.createFile(docPdf);
+  documentoPdf.moveTo(carpeta);
+  newDoc.moveTo(carpeta);
+```
+Si queramos guardar la carpeta dentro de Otra carpeta entonces debemos seguir los siguientes pasos:
+
+1. Creamos una carpeta manualmente, donde se almacenaran las carpetas por cada ejecucion del codigo.
+2. Movemos manualmente tanto el Spread Sheet(Paramentros Certificados) como Docs(Platilla Certificados).
+3. Ahora que la el Spread Sheet no esta en la carpeta raiz sino en una subcarpeta debemos obtener `getFileById()` de la subcarpeta y usamos las funciones `.getParents().next()` para indicar la ruta de la carpeta padre.  
+
+```js
+var idHoja = SpreadsheetApp.getActive().getId();
+var carpetaPadre = DriveApp.getFileById(idHoja).getParents().next();
+//Finalemte creamos la carpeta, esto solo se debe hace fuera del bucle y es llamada desde `while`.
+var carpeta =carpetaPadre.createFolder('Certificados: '+ new Date());
+```

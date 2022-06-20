@@ -18,6 +18,7 @@ Powered by: Aula en la nube
 - [Mejorando función combinar correspondencia](#eejora-do-func-ón-combinar--orr-pdf-dencia)
 - [Enviar correos electrónicos con PDF adjunto](#enviar-correos-electrónicos-con-pdf-adjunto)
 - [Funciones personalizadas en Google Sheets](#funciones-personalizadas-en-google-sheets)
+- [Bucle FOR Doble sobre un rango de celdas en Google Sheets](#bucle-for-doble-sobre-un-rango-de-celdas-en-google-sheets)
 
 
 ## Installar Google Apps Script
@@ -810,5 +811,14 @@ GmailApp.sendEmail(destinatario,titulo,cuerpo,{attachments:[documentoPdf]})
 ## Funciones personalizadas en Google Sheets    
 *[Indice](#indice)*   
 
+Las funciones personalizadas pueden ser usadas dentro de las celdas de excel, solo tenemos de ejecutarlas y entregarle los parametros que requiere la funcion, es como ejecutar cualquier funcion mativa de excel. 
+- La funcion `=DOUBLE(A2)` toma un valor y retorna el cuadrado de ese valor. 
+```js
+function DOUBLE(x){
+  return x**2;
+}
+```
 
+## Bucle FOR Doble sobre un rango de celdas en Google Sheets    
+*[Indice](#indice)*   
 

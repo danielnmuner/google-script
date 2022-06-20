@@ -15,6 +15,7 @@ Powered by: Aula en la nube
 - [Añadiendo casillas de verificación](#añadiendo-casillas-de-verificación)
 - [Generar PDF a partir de un documento de Google](#generar-pdf-a-partir-de-un-documento-de-google)
 - [Crear carpetas y mover archivos](#crear-carpetas-y-mover-archivos)
+- [Mejorando función combinar correspondencia](#mejorando-función-combinar-correspondencia)
 
 
 ## Installar Google Apps Script
@@ -763,3 +764,9 @@ var carpetaPadre = DriveApp.getFileById(idHoja).getParents().next();
 //Finalemte creamos la carpeta, esto solo se debe hace fuera del bucle y es llamada desde `while`.
 var carpeta =carpetaPadre.createFolder('Certificados: '+ new Date());
 ```
+
+## Mejorando función combinar correspondencia    
+*[Indice](#indice)*
+
+
+

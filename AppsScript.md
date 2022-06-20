@@ -10,6 +10,7 @@ Powered by: Aula en la nube
 - [Crear formulario HTML en Google Docs](#crear-formulario-html-en-google-docs)   
 - [Crear tablas personalizadas con formulario HTML](#crear-tablas-personalizadas-con-formulario-html)
 - [Combinar correspondencia en Google Docs](#combinar-correspondencia-en-google-docs)
+- [Combinar correspondencia múltiple](#combinar-correspondencia-múltiple)
 
 
 ## Installar Google Apps Script
@@ -514,3 +515,7 @@ function CreateCertificate(curso,plataforma,funcion){
   documento.getBody().replaceText('<<fecha>>',certyDate);
 }
 ```
+![image](https://user-images.githubusercontent.com/60556632/174513478-a463c626-6017-428f-adc6-f71bb63d6828.png)
+
+## Combinar correspondencia múltiple    
+*[Indice](#indice)*

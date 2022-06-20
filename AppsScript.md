@@ -2,6 +2,7 @@
 Powered by: Aula en la nube
 
 ## Indice
+### Basic Module
 - [Crear y abrir documentos en Google DOCS](#crear-y-abrir-documentos-en-google-docs)
 - [Condiciones](#condiciones)
 - [Bucle](#bucle)
@@ -20,6 +21,7 @@ Powered by: Aula en la nube
 - [Funciones personalizadas en Google Sheets](#funciones-personalizadas-en-google-sheets)
 - [Bucle FOR Doble sobre un rango de celdas en Google Sheets](#bucle-for-doble-sobre-un-rango-de-celdas-en-google-sheets)
 - [Bucle FOR IN Doble sobre un rango de celdas](#bucle-for-in-doble-sobre-un-rango-de-celdas)
+- [Bucle FOREACH Doble sobre un rango de celdas](#bucle-foreach-doble-sobre-un-rango-de-celdas)
 
 
 ## Installar Google Apps Script
@@ -874,3 +876,5 @@ function DoubleArrayForIn(datos) {
   } 
 } 
 ```
+## Bucle FOREACH Doble sobre un rango de celdas    
+*[Indice](#indice)*  

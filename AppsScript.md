@@ -17,6 +17,7 @@ Powered by: Aula en la nube
 - [Crear carpetas y mover archivos](#crear-carpetas-y-mover-archivos)
 - [Mejorando función combinar correspondencia](#eejora-do-func-ón-combinar--orr-pdf-dencia)
 - [Enviar correos electrónicos con PDF adjunto](#enviar-correos-electrónicos-con-pdf-adjunto)
+- [Funciones personalizadas en Google Sheets](#funciones-personalizadas-en-google-sheets)
 
 
 ## Installar Google Apps Script
@@ -806,5 +807,8 @@ var titulo =  'Certificado: ' + currentSheet.getRange('B'+row).getValue();
 var cuerpo =  'Enhorabuena, a continuacion adjuntamos el certificado de ' + currentSheet.getRange('F'+row).getValue()+ ' que obtubiste en ' + currentSheet.getRange('B'+row).getValue();
 GmailApp.sendEmail(destinatario,titulo,cuerpo,{attachments:[documentoPdf]})
 ```
+## Funciones personalizadas en Google Sheets    
+*[Indice](#indice)*   
+
 
 

@@ -12,6 +12,7 @@ Powered by: Aula en la nube
 - [Combinar correspondencia en Google Docs](#combinar-correspondencia-en-google-docs)
 - [Combinar correspondencia múltiple](#combinar-correspondencia-múltiple)
 - [Añadir ventana de verificación sobre combinar correspondencia](#añadir-ventana-de-verificación-sobre-combinar-correspondencia)
+- [Añadiendo casillas de verificación](#añadiendo-casillas-de-verificación)
 
 
 ## Installar Google Apps Script
@@ -619,5 +620,5 @@ function InsertData() {
   }
 ```
 
-## 
+## Añadiendo casillas de verificación
 *[Indice](#indice)* 

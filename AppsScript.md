@@ -19,6 +19,7 @@ Powered by: Aula en la nube
 - [Enviar correos electrónicos con PDF adjunto](#enviar-correos-electrónicos-con-pdf-adjunto)
 - [Funciones personalizadas en Google Sheets](#funciones-personalizadas-en-google-sheets)
 - [Bucle FOR Doble sobre un rango de celdas en Google Sheets](#bucle-for-doble-sobre-un-rango-de-celdas-en-google-sheets)
+- [Bucle FOR IN Doble sobre un rango de celdas](#bucle-for-in-doble-sobre-un-rango-de-celdas)
 
 
 ## Installar Google Apps Script
@@ -821,4 +822,55 @@ function DOUBLE(x){
 
 ## Bucle FOR Doble sobre un rango de celdas en Google Sheets    
 *[Indice](#indice)*   
+- Operar arreglos de datos a partir de estructuras iterativas.
+```js
+function DoubleArray(datos) {
+//Valida si hay mas de un dato en la funcion.
+  if(Array.isArray(datos)){
+    var result = [];
+    //Se posiciona en la celda A1 y valida el tamaño del Arreglo de arriba a abajo.
+    for(var row = 0; row < datos.length;row++){
+      result[row] = new Array(datos[row].length);
+      //La primera posicion es datos[1]=A1, datos[2]=A2, ahora los convertimos en array
+      //new Array(A1.length) y determinamos en tamaño a nivel de columnas. 
+      for(var cols = 0; cols<result[row].length;cols++){
+        //result[1][1]=A1, result[1][2]=B1..., calculamos el doble de cada celda de la tabla
+        //pero lo parsemos entes de guardarlo en la matriz. 
+        result[row][cols] = parseInt(datos[row][cols])*2;
+      }
+    }
+    return result;
+  }
+  //Si no hay un rango de valores solo calculamos el doble.
+  else 
+  {
+    return datos*2;
+  } 
+} 
+```
 
+## Bucle FOR IN Doble sobre un rango de celdas    
+*[Indice](#indice)*  
+
+A continuacion se muestra como se puede ejecutar el mimo codigo a partir de un bucle `For In`
+```js
+function DoubleArrayForIn(datos) {
+  if(Array.isArray(datos)){
+    var result = [];
+    for(var row in datos)
+      //Array para guardar los elementos de las filas
+      var dataRow = [];
+      for(var cols in datos[row]){
+        //Push permite añandir cada elemento en dataRow
+        dataRow.push(parseInt(datos[row][cols])*2);
+      }
+      result.push(dataRow)
+    }
+    return result;
+  }
+  else 
+  {
+    return datos*2;
+  } 
+} 
+```

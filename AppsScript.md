@@ -799,6 +799,12 @@ else
 
 ## Enviar correos electrónicos con PDF adjunto     
 *[Indice](#indice)*   
-
+Para enviar un correo electronico necesitamos primero crear una lista que contenga los correo electronicos en `Google Sheets`, luego usamos las funcion `GmailApp.sendEmail(destinatario,titulo,cuerpo,{attachments:[documento]})` le pasamos los paramentros obtenidos y listo.😎
+```js
+var destinatario =  currentSheet.getRange('F'+row).getValue();
+var titulo =  'Certificado: ' + currentSheet.getRange('B'+row).getValue();
+var cuerpo =  'Enhorabuena, a continuacion adjuntamos el certificado de ' + currentSheet.getRange('F'+row).getValue()+ ' que obtubiste en ' + currentSheet.getRange('B'+row).getValue();
+GmailApp.sendEmail(destinatario,titulo,cuerpo,{attachments:[documentoPdf]})
+```
 
 

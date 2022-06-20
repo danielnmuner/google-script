@@ -15,7 +15,8 @@ Powered by: Aula en la nube
 - [Añadiendo casillas de verificación](#añadiendo-casillas-de-verificación)
 - [Generar PDF a partir de un documento de Google](#generar-pdf-a-partir-de-un-documento-de-google)
 - [Crear carpetas y mover archivos](#crear-carpetas-y-mover-archivos)
-- [Mejorando función combinar correspondencia](#mejorando-función-combinar-correspondencia)
+- [Mejorando función combinar correspondencia](#eejora-do-func-ón-combinar--orr-pdf-dencia)
+- [Enviar correos electrónicos con PDF adjunto](#enviar-correos-electrónicos-con-pdf-adjunto)
 
 
 ## Installar Google Apps Script
@@ -795,6 +796,9 @@ if (documentosGenerados>0)
 else 
   ui.alert('No se han encontrado datos por lo cual no se generaron documentos')
 ```
+
+## Enviar correos electrónicos con PDF adjunto     
+*[Indice](#indice)*   
 
 
 

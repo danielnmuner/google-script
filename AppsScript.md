@@ -26,6 +26,8 @@ Powered by: Aula en la nube
 - [Función REDUCE para analizar matrices y arrays](#función-reduce-para-analizar-matrices-y-arrays)
 - [Función FILTER sobre rango de celdas](#función-filter-sobre-rango-de-celdas)
 - [Funciones con varios parámetros](#funciones-con-varios-parámetros)
+- [Crear Barra lateral en Google Sheets](#Crear Barra lateral en Google-sheets)
+- [Crear Barra lateral en Google Sheets](#crear-barra-lateral-en-google-sheets)
 
 
 ## Installar Google Apps Script
@@ -1020,3 +1022,30 @@ function FilterArray(datos){
 
 ## Funciones con varios parámetros    
 *[Indice](#indice)* 
+
+La documentacion de una funcion permite al usuario tener mas informacion hacerca de su uso como saber el tipo de dato que debe ingresar. El proceso se debe seguir tal cual como aparece a continuacion. 
+```js
+/**
+ * Multiplicar celdas por el valor almacenado en otra celda
+ * 
+ * @param {number|Array<Array<number>>} datos - Celda o Rango de Celdas que queremos multiplicar
+ * @para {number} multiplicador- Celda multiplicadora.
+ * @customfunction 
+ */
+
+function MULTIPLICADOR(datos,multiplicador){
+
+//Posibles Errores
+  if (Array.isArray(multiplicador) || multiplicador==null) return 'Error: El se aceptan Arrays o Nulos'
+  if (Array.isArray(datos)){
+    return datos.map(row => row.map(cell => cell*multiplicador));
+  }
+  else{
+    return datos *2;
+  }
+}
+``` 
+## Crear Barra lateral en Google Sheets    
+*[Indice](#indice)*   
+
+- [Creacion de Barra Repositorio](https://github.com/aulaenlanube/barra-lateral-estilos-gas)

@@ -55,4 +55,145 @@ function include(filename){
   })
 </script>
 ```
-2. Implementar $\to$ selecionar tipo $\to$ aplicacion web $\to$ implementar. Finalemente abrimos `Implementaciones de Prueba`.
+2. Implementar luego hacemos las implementaciones de prueba que necesitemos y finalmente `Gestionar Implementaciones` alli obtendremos un enlace y lo podemos cargar en google Sites. 
+
+## Codigo Fuente
+### Apps Script
+```js
+//Guardamos todo el libro en la variable SS
+const SS = SpreadsheetApp.openById('16Qtw0raJ6a8_SV1eSQrIcn5F5gFVEcVgsWHPzym6GpQ');
+//Guardamos la hoja Registros en una variable
+const sheetRegistros = SS.getSheetByName('Registros');
+//Guardamos la hoja BD en una variable
+const sheetBd = SS.getSheetByName('BD');
+
+//build-in function o funcion reservada
+function doGet() {
+
+  //Obtener datos de la hoja BD
+  var datos = sheetBd.getDataRange().getValues();
+  //Saltamos la fila de encabezado 
+  datos.shift();
+
+  //El arreglo almacena la opciones que se cargen en la pagina
+  var talleres = [];
+  //Cada fila es un arreglo de columnas y evaluamos la columna de lugares disponibles
+  datos.forEach(row => {
+    if(row[1] > 0){
+      talleres.push(row[0]);
+    }
+  });
+
+  //Guardamos el HTML en template
+  var template = HtmlService.createTemplateFromFile('form');
+  //Crear la propiedad talleres dentro del objeto template
+  template.talleres= talleres;
+  //Evaluamos que el codigo HTML este bien
+  var output = template.evaluate();
+  return output;
+}
+
+//Creamos la funcion que nos permite conectar con los archivos 'css' y 'js'
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+  
+}
+
+function addRecord(form){
+  console.log(form.taller)
+  //validar cupo
+
+  var cupoDisponible = verCupoTaller(form.talleres);
+  sheetRegistros.appendRow([new Date,form.talleres]);
+  return 'Registro Recibido';
+}
+
+function verCupoTaller(chosen){
+  var talleres = sheetBd.getDataRange().getValues();
+  talleres.shift();
+  talleres.map(taller => {
+    if(taller[0] == chosen){
+      if(taller[1]>0){
+        return true;
+      }
+      else{
+        throw 'Este taller ya no tiene cupo, recarga la pagina';
+      }
+    }
+  });
+}
+```
+
+### HTML
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!--Utilizamos un scriptlet para conectar el CSS -->
+    <?!= include('css'); ?>
+  </head>
+  <body>
+  <div id='output'>
+    <!--Evento para validar respuesta -->
+    <form id='talleres' onSubmit="validarRespuesta(this)">
+      <h3>Seleccionar taller de tu preferencia</h3>
+
+      <? talleres.forEach(taller => {?>
+      <input type="radio" name="talleres" value="<?=taller?>"/> <?=taller?><br/>
+      <?}); ?>
+
+      <input type="submit" class="action" id="btnSubmit" class="action" value="Enviar"/>
+    </form>
+  </div>
+  <!--Utilizamos un scriptlet para conectar el JS -->  
+  <?!= include('js');?> 
+  </body>
+</html>
+```
+
+### CSS
+
+```html
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<style>
+  body{
+    padding:20px;
+  }
+
+</style>
+```
+
+### JS
+
+```html
+<script>
+  window.addEventListener('load',function(){
+    console.log('Codigo del Lado del Cliente')
+  })
+  function validarRespuesta(form) {
+    event.preventDefault();
+    //Se ejecuta al enviar el formulario
+    google.script.run
+    //Se ejecuta al recibir un Ok del lado del servidor
+    .withSuccessHandler( showSuccessMessage )
+    //Cuando la respuesta del servidor es de rechazo
+    .withFailureHandler(onFailure)
+    //Cuando se presione el boton
+    .addRecord( form );
+  }
+
+  function showSuccessMessage(answer,form){
+    console.log(answer);
+    var div = document.getElementById('output');
+    div.innerHTML = '<br/><h4><font color="green">Tu respuesta ha sido Enviada</font></h4><br/><br/>'
+  }
+  function onFailure(error){
+    console.log(error);
+    var div = document.getElementById('output');
+    div.innerHTML = '<br/><h4><font color="red">No se ha logrado envir tu Solicitud</font></h4><br/>'
+  }
+
+</script>
+```

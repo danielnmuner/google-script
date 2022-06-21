@@ -3,6 +3,7 @@
 By: Mozart Alberto García de Haro
 
 - [Creando una WebApp de 0 a 100](#creando-una-webApp-de-0-a-100)
+- [Lista desplegable](#lista-desplegable)
 
 
 ### Creando una WebApp de 0 a 100
@@ -196,4 +197,65 @@ function verCupoTaller(chosen){
   }
 
 </script>
+```
+### Lista desplegable
+
+- Codigo **Apps Script**
+```js 
+var ss = SpreadsheetApp.openById('16Qtw0raJ6a8_SV1eSQrIcn5F5gFVEcVgsWHPzym6GpQ')
+var sheetLista = ss.getSheetByName('Lista')
+
+function doGet() {
+
+
+//ForEach para obtener valores de forma dinamica
+  var data = sheetLista.getDataRange().getValues();
+  data.shift();
+  var lista = []
+  data.forEach(list => {
+    if(list != ""){
+      lista.push(list[0]);
+    }
+  });
+
+//Coneccion y validacion del HTML
+  var template = HtmlService.createTemplateFromFile('lista');
+  template.lista =  lista;
+  var output = template.evaluate();
+
+  return output;
+}
+
+//Creamos la funcion que nos permite conectar con los archivos 'css' y 'js'
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+```
+- Codigo **HTML**
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!--Utilizamos un scriptlet para conectar el CSS -->
+    <?!= include('css'); ?>
+  </head>
+  <body>
+  <form id="empleados">
+    <div class="form-group">
+      <label for="lista">Seleccion la opcion que prefieras</label>
+      <!-- El atributo Id se usa en el frontend y el Name se usa en backend -->
+      <select id="lista" name="lista">
+        <?lista.forEach(list => {?>
+           <option value="<?=list?>"><?=list?></option><br/>
+        <?});?>   
+      </select>
+    </div>
+    <br/>
+    <input type="submit" class="blue" name="btnSummit" id="submit" value="Enviar"/>
+  </form>
+  <!--Utilizamos un scriptlet para conectar el JS -->  
+  <?!= include('js');?> 
+  </body>
+</html>
 ```

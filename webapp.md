@@ -6,7 +6,7 @@ By: Mozart Alberto García de Haro
 - [Lista desplegable](#lista-desplegable)
 - [Tablas html dinámicas](#tablas-html-dinámicas)
 - [Calendar a Google Sheets](#calendar-a-google-sheets)
-
+- [Formulario de registro con Bootstrap](#formulario-de-registro-con-bootstrap)
 
 ### Creando una WebApp de 0 a 100
 1. Antes de empezar a desarrollar el codigo debemos verificar que el **HTML** este abriendo desde Apps Script y que este comunicado con los archivos **CSS** y **JS**.
@@ -341,4 +341,67 @@ function include(filename){
 </style>
 ```
 ### Calendar a Google Sheets
+- Apps Script
+```js
+function onOpen(){
+  var ui = SpreadsheetApp.getUi();
+  var menu = ui.createMenu('Calendar');
+  menu.addItem('Importar Eventos','ImportEvents')
+  .addToUi();
+}
+
+function ImportEvents(){
+//Pasos a seguir:
+//1. Seleccionar la hoja de calculo
+var ss = SpreadsheetApp.openById('16Qtw0raJ6a8_SV1eSQrIcn5F5gFVEcVgsWHPzym6GpQ');
+var sheetEvents = ss.getSheetByName('Eventos');
+//2. Acceder al calandario deseado
+
+var calendars = CalendarApp.getCalendarsByName('danielnicolasmuner@gmail.com')
+var calendar = calendars[0];
+console.log('Se encontraron %s calendario(s) con este nombre: ', calendars.length, calendar.getName());
+//3. Calendar App
+
+var fechaInicio = new Date();
+//Cuantos dias a partir de la fecha de inicio
+var dias = 30;
+//Obtenemos la fechaFinal a partir de la fechaInicio y mas los dias pero debemos manejar el tiempo en milisegundos
+var fechaFinal = new Date(fechaInicio.getTime() + (dias*24*60*60*1000));
+console.log(fechaInicio,fechaFinal)
+
+var eventos = calendar.getEvents(fechaInicio,fechaFinal);
+//4. Almacenar la informacion en un arreglo
+var record = [];
+eventos.forEach(event => {
+  record.push([event.getTitle(),event.getDescription() || '', event.getStartTime() || '', event.getEndTime() || '']);
+});
+
+console.log(record)
+//5. Importar la informacion a la hoja4
+//getRange(startrow,startcol,#rowmaximo,#colsmax)
+sheetEvents.getRange(2,1,record.length,record[0].length).setValues(record);
+}
+
+var ss = SpreadsheetApp.openById('16Qtw0raJ6a8_SV1eSQrIcn5F5gFVEcVgsWHPzym6GpQ');
+var sheetBd = ss.getSheetByName('BD');
+//getDisplayValues(); obtiene los valores tal cual como se ven(con formato)
+var data =  sheetBd.getDataRange().getDisplayValues();
+
+
+function doGet() {
+  console.log(data)
+//Coneccion y validacion del HTML
+  var template = HtmlService.createTemplateFromFile('page');
+  template.dato = data;
+  var output = template.evaluate();
+  return output;
+}
+
+//Creamos la funcion que nos permite conectar con los archivos 'css' y 'js'
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+```
+### Formulario de registro con Bootstrap
+
 

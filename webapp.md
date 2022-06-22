@@ -4,6 +4,7 @@ By: Mozart Alberto García de Haro
 
 - [Creando una WebApp de 0 a 100](#creando-una-webApp-de-0-a-100)
 - [Lista desplegable](#lista-desplegable)
+- [Tablas html dinámicas](#tablas-html-dinámicas)
 
 
 ### Creando una WebApp de 0 a 100
@@ -254,6 +255,37 @@ function include(filename){
     <br/>
     <input type="submit" class="blue" name="btnSummit" id="submit" value="Enviar"/>
   </form>
+  <!--Utilizamos un scriptlet para conectar el JS -->  
+  <?!= include('js');?> 
+  </body>
+</html>
+```
+### Tablas html dinámicas
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!--Utilizamos un scriptlet para conectar el CSS -->
+    <?!= include('css'); ?>
+  </head>
+  <body>
+  <div id="output">
+    <table>
+      <? for(var i in data){?>
+        <tr>
+          <? for(var j in data[i]){?>
+            <? if(i==0){?>
+              <th><?=data[i][j]?></th>
+            <?} else {>?
+              <td><?=data[i][j]?></td>
+            <?}?>
+          <?}?>
+        </tr>
+      <?}?>
+    </table>
+  </div>
   <!--Utilizamos un scriptlet para conectar el JS -->  
   <?!= include('js');?> 
   </body>

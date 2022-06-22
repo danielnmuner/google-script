@@ -7,6 +7,7 @@ By: Mozart Alberto García de Haro
 - [Tablas html dinámicas](#tablas-html-dinámicas)
 - [Calendar a Google Sheets](#calendar-a-google-sheets)
 - [Formulario de registro con Bootstrap](#formulario-de-registro-con-bootstrap)
+- [Bootstrap, íconos, CSS y Apps Script](#bootstrap,-íconos-,-css-y-apps-script)
 
 ### Creando una WebApp de 0 a 100
 1. Antes de empezar a desarrollar el codigo debemos verificar que el **HTML** este abriendo desde Apps Script y que este comunicado con los archivos **CSS** y **JS**.
@@ -598,3 +599,6 @@ function doPost(e){
   </body>
 </html>
 ```
+
+### Bootstrap, íconos, CSS y Apps Script
+[Design](https://www.youtube.com/watch?v=mGK1LE8Q4AQ&list=PLFVYPW43NcuzRignaoqLX1BBoNmN-cVQV&index=21)

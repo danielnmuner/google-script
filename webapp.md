@@ -5,6 +5,7 @@ By: Mozart Alberto García de Haro
 - [Creando una WebApp de 0 a 100](#creando-una-webApp-de-0-a-100)
 - [Lista desplegable](#lista-desplegable)
 - [Tablas html dinámicas](#tablas-html-dinámicas)
+- [Calendar a Google Sheets](#calendar-a-google-sheets)
 
 
 ### Creando una WebApp de 0 a 100
@@ -262,6 +263,29 @@ function include(filename){
 ```
 ### Tablas html dinámicas
 
+- Apps Script
+```js
+var ss = SpreadsheetApp.openById('16Qtw0raJ6a8_SV1eSQrIcn5F5gFVEcVgsWHPzym6GpQ');
+var sheetBd = ss.getSheetByName('BD');
+//getDisplayValues(); obtiene los valores tal cual como se ven(con formato)
+var data =  sheetBd.getDataRange().getDisplayValues();
+
+
+function doGet() {
+  console.log(data)
+//Coneccion y validacion del HTML
+  var template = HtmlService.createTemplateFromFile('page');
+  template.dato = data;
+  var output = template.evaluate();
+  return output;
+}
+
+//Creamos la funcion que nos permite conectar con los archivos 'css' y 'js'
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+```
+- HTML
 ```html
 <!DOCTYPE html>
 <html>
@@ -275,15 +299,16 @@ function include(filename){
     <table>
       <? for(var i in data){?>
         <tr>
-          <? for(var j in data[i]){?>
-            <? if(i==0){?>
+          <? for(var j in data[i]){
+              if(i==0){?>
               <th><?=data[i][j]?></th>
-            <?} else {>?
-              <td><?=data[i][j]?></td>
-            <?}?>
-          <?}?>
-        </tr>
-      <?}?>
+              <?}
+              else{?>
+              <td><?= data[i][j]?></td>
+              <?}?>
+              <?}?>
+           </tr>
+       <?}?>
     </table>
   </div>
   <!--Utilizamos un scriptlet para conectar el JS -->  
@@ -291,3 +316,29 @@ function include(filename){
   </body>
 </html>
 ```
+- CSS
+```html
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<style>
+  body{
+    padding:20px;
+  }
+  #output{
+    width: 720px;
+  }
+  table{
+    table-layout: fixed;
+    width:100%;
+  }
+  th{
+    background-color:#ebebeb;
+    font-weight: bold;
+    padding:8px;
+  }
+  td{
+    padding:8px;
+  }
+</style>
+```
+### Calendar a Google Sheets
+

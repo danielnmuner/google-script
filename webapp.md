@@ -8,6 +8,7 @@ By: Mozart Alberto García de Haro
 - [Calendar a Google Sheets](#calendar-a-google-sheets)
 - [Formulario de registro con Bootstrap](#formulario-de-registro-con-bootstrap)
 - [Bootstrap, íconos, CSS y Apps Script](#bootstrap,-íconos-,-css-y-apps-script)
+- [Cargar archivos con Web API](#cargar-archivos-con-Web-api)
 
 ### Creando una WebApp de 0 a 100
 1. Antes de empezar a desarrollar el codigo debemos verificar que el **HTML** este abriendo desde Apps Script y que este comunicado con los archivos **CSS** y **JS**.
@@ -602,3 +603,135 @@ function doPost(e){
 
 ### Bootstrap, íconos, CSS y Apps Script
 [Design](https://www.youtube.com/watch?v=mGK1LE8Q4AQ&list=PLFVYPW43NcuzRignaoqLX1BBoNmN-cVQV&index=21)
+
+### Cargar archivos con Web API
+
+- Codigo Apps Script
+```js
+//La funcion doGet() se ejecuta automaticamente cada vez que se carga la pagina
+function doGet() {
+//Coneccion y validacion del HTML
+  var html = HtmlService.createTemplateFromFile('page');
+  var output = html.evaluate();
+  return output;
+}
+
+function uploadFiles(obj){
+  //console.log(obj)
+  var file = Utilities.newBlob(obj.bytes,obj.mimeType,obj.filename);
+  var folder = DriveApp.getFolderById('14DsCM9ho40XJQ3lq4ES6mN0hIMevGQWA');
+  var createFile = folder.createFile(file);
+  return createFile.getId();
+}
+
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+} 
+```
+
+- Codigo Java Script
+```html 
+<!--Bootstrap - Include via CDN JS --->
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+<script>
+//Lector de Imagenes (WebApi), permite ller imagenes de forma asincrona.
+//Permitiremos al usuario ver una lista previa de la imagen
+//recibe el atributo files e itera cada archivo y crea un elemento html de tipo imagen le agrega la clase
+//objeto y lo inserta en un div con preview de la imagen.
+
+document.getElementById('formFile').addEventListener('change',handleFiles,false)
+var button = document.getElementById('btn-submit');
+button.addEventListener('click',uploadFile);
+
+function handleFiles(f) {
+  var previewDiv = document.getElementById('preview').innerHTML = '';
+  const files = document.getElementById('formFile').files;
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (!file.type.startsWith('image/')){ continue }
+
+    const img = document.createElement("img");
+    img.classList.add("obj");
+    img.file = file;
+    preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+
+    const reader = new FileReader();
+    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.readAsDataURL(file);
+  }
+}
+
+function uploadFile(){
+  //document.getElementById nos permite llamar un dumento/objeto del html, seleccionamos solo el primer archivo
+  const selectedFile = document.getElementById('formFile').files[0];
+  const imgs = document.querySelectorAll('.obj');
+  for (let i =0 ; i < imgs.length; i++){
+    new FileUpload(imgs[i],imgs[i].file);
+  }
+}
+
+function FileUpload(img,file){
+  var reader = new FileReader();
+  reader.onload = function(event){
+    //console.log(event.target.result)
+    const obj = {
+      //El nombre del archivo
+      filename: file.name,
+      //Se refiere al tipo de archivo
+      mimeType: file.type,
+      //Es una nueva instacia del array del resultado de la lectura
+      bytes: [...new Int8Array(event.target.result)]
+    };
+    //console.log(obj.mimeType)-> Esto es lo que se envia al servidor para generar e archivo en la carpeta de drive.
+    google.script.run
+    .withSuccessHandler((e)=> console.log(e))
+    .uploadFiles(obj);
+  };
+
+  reader.readAsArrayBuffer(file);
+}
+
+</script>
+```
+
+- Codigo CSS
+```html
+<!-- <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css"> -->
+
+<!-- Bootstrap Include via CDN CSS-->
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+<style>
+  body{
+    padding:20px;
+  }
+</style>
+```
+
+- Codigo HTML
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+  <?!=include('css')?>
+    <base target="_top">
+  </head>
+  <body>
+  <div class="container">
+    <h3>Load File</h3>
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Upload Here🚀</label>
+      <input class="form-control" type="file" id="formFile">
+    </div>
+    <div id="preview" class="mb-3"></div>
+
+    <button type="button" class="btn btn-primary" id="btn-submit">Upload</button>
+  </div>
+  <?!=include('js')?>  
+  </body>
+</html>
+```
